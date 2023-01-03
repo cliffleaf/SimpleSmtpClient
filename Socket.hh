@@ -1,12 +1,17 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
-#include <WinSock2.h> // replaced with sys/socket.h if programming in Linux
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/socket.h> 
+#include <netdb.h>
+#include <stdio.h>
+#include <string.h>
 
 class Socket
 {
 public:
-    Socket(const char* host, int port);
+    Socket(const char* hostname, int port);
 
     // combine socket() and connect() with some pre-defined parameters
     int connectToHost();
@@ -15,9 +20,10 @@ public:
     // void terminate();
 
 private:
-    const char* host;
+    const char* hostname;
     int port;
-    sockaddr_in buildServerAddress();
+    sockaddr_in buildServerAddress(char* hostaddr);
+    void hostnameToIp(char* hostname , char* hostaddr);
 };
 
 #endif
