@@ -1,4 +1,6 @@
 #include "./Socket.hh"
+#include <WinSock2.h> // replaced with sys/socket.h if programming in Linux
+#include <stdio.h>
 
 Socket::Socket(const char* host, int port)
 {
@@ -8,11 +10,22 @@ Socket::Socket(const char* host, int port)
 
 int Socket::connectToHost()
 {
-    // combine socket() and connect() with some pre-defined parameters
+    // socket(int domain, int type, int protocol)
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (socketfd < 0) {
+        printf("undable to open socket\n");
+        return socketfd;
+    }
+
     sockaddr_in serverAddress = this->buildServerAddress();
 
     int con = connect(socketfd, (struct sockaddr*) &serverAddress, sizeof(serverAddress));
+    if (con < 0) {
+        printf("unable to connect to host\n");
+    } else {
+        printf("connected to host\n");
+    }
+
     return con;
 }
 

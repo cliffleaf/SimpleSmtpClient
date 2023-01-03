@@ -10,9 +10,9 @@ public:
 
     // combine socket() and connect() with some pre-defined parameters
     int connectToHost();
-    void read();
-    void write(const char* text);
-    void terminate();
+    // void read();
+    // void write(const char* text);
+    // void terminate();
 
 private:
     const char* host;
