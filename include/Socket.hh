@@ -13,15 +13,15 @@ class Socket
 public:
     Socket(const char* hostname, int port);
 
-    // combine socket() and connect() with some pre-defined parameters
     int connectToHost();
-    // void read();
-    // void write(const char* text);
+    // int read();
+    int write(const char* text);
     // void terminate();
 
 private:
     const char* hostname;
     int port;
+    int socketfd;
     sockaddr_in buildServerAddress(char* hostaddr);
     void hostnameToIp(char* hostname , char* hostaddr);
 };

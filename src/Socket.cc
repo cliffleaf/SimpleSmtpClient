@@ -1,4 +1,4 @@
-#include "./Socket.hh"
+#include "../include/Socket.hh"
 
 Socket::Socket(const char* hostname, int port)
 {
@@ -8,13 +8,11 @@ Socket::Socket(const char* hostname, int port)
 
 int Socket::connectToHost()
 {
-    int socketfd, con;
-
     char hostaddr[100];
     this->hostnameToIp( (char*) this->hostname, hostaddr);
 
     // socket(int domain, int type, int protocol)
-    socketfd = socket(AF_INET, SOCK_STREAM, 0);
+    this->socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd < 0) {
         printf("undable to open socket\n");
         return socketfd;
@@ -24,7 +22,7 @@ int Socket::connectToHost()
 
     sockaddr_in serverAddress = this->buildServerAddress(hostaddr);
 
-    con = connect(socketfd, (struct sockaddr*) &serverAddress, sizeof(serverAddress));
+    int con = connect(socketfd, (struct sockaddr*) &serverAddress, sizeof(serverAddress));
     if (con < 0) {
         printf("unable to connect to hostname\n");
     } else {
@@ -32,6 +30,11 @@ int Socket::connectToHost()
     }
 
     return con;
+}
+
+int Socket::write(const char* text)
+{
+    return send(this->socketfd, text, strlen(text), 0);
 }
 
 sockaddr_in Socket::buildServerAddress(char* hostaddr)

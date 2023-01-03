@@ -1,4 +1,4 @@
-#include "./Socket.hh"
+#include "include/Socket.hh"
 
 void hostname_to_ip(char* hostname , char* ip);
 
@@ -12,5 +12,5 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-// g++ -o main main.cc Socket.cc
-// ./main.exe
+// g++ -o main main.cc src/Socket.cc
+// ./main
