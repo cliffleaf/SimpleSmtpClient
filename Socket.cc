@@ -10,8 +10,10 @@ Socket::Socket(const char* host, int port)
 
 int Socket::connectToHost()
 {
+    int socketfd, con;
+
     // socket(int domain, int type, int protocol)
-    int socketfd = socket(AF_INET, SOCK_STREAM, 0);
+    socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd < 0) {
         printf("undable to open socket\n");
         return socketfd;
@@ -19,7 +21,7 @@ int Socket::connectToHost()
 
     sockaddr_in serverAddress = this->buildServerAddress();
 
-    int con = connect(socketfd, (struct sockaddr*) &serverAddress, sizeof(serverAddress));
+    con = connect(socketfd, (struct sockaddr*) &serverAddress, sizeof(serverAddress));
     if (con < 0) {
         printf("unable to connect to host\n");
     } else {
