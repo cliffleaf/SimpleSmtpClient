@@ -1,16 +1,16 @@
 #include "./Socket.hh"
-#include <stdio.h>
+
+void hostname_to_ip(char* hostname , char* ip);
 
 int main(int argc, char *argv[])
 {
-    const char* host = "64.233.185.108";
+    char* hostname = (char*) "smtp.gmail.com";
     int port = 587;
 
-    Socket socket(host, port);
+    Socket socket(hostname, port);
     printf("%d\n", socket.connectToHost());
- 
     return 0;
 }
 
-// g++ -o main main.cc Socket.cc -lws2_32
+// g++ -o main main.cc Socket.cc
 // ./main.exe
