@@ -1,5 +1,5 @@
 # SmtpClient
-A simple SMTP client, allow users to build and send an email to a SMTP server
+A simple SMTP client, allow users to send emails through an existing SMTP server
 
 ### Quick Start
 clone the project, and create a file for int main(), modify as below. 
