@@ -1,24 +1,22 @@
 # SmtpClient
-custom smtp client application
+A simple SMTP client, allow users to build and send an email to a SMTP server
 
-```
+## Quick Start
+clone the project, and modify main.cc as such. 
 
-void tryClient();
+The SMTP server is mailchimp, also remember to change the AUTH details in SmtpClient::mailCommands() 
 
-int main(int argc, char *argv[])
-{
-    tryClient();
+```ruby
 
-    return 0;
-}
+#include "headers.hh"
 
 void tryClient()
 {
-    const char* sender = "kevinliang0430@gmail.com";
-    const char* subject = "hello";
-    const char* message = "lol";
+    const char* sender = "your@email";
+    const char* subject = ?;
+    const char* message = ?;
     std::vector<std::string> recipients;
-    recipients.push_back("kevinliang0430@gmail.com");
+    recipients.push_back("recipient@email");
 
     Mail mail(sender, recipients, subject, message);
 
@@ -26,6 +24,13 @@ void tryClient()
     int port = 2525;
     SmtpClient client(hostname, port);
     client.sendMail(mail);
+}
+
+int main(int argc, char *argv[])
+{
+    tryClient();
+
+    return 0;
 }
 
 ```
