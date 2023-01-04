@@ -34,3 +34,9 @@ int main(int argc, char *argv[])
 }
 
 ```
+
+## Helpful Tutorials
+C/C++ Socket Programming
+[SMTP commands](https://mailtrap.io/blog/smtp-commands-and-responses)
+[Troubleshooting common SMTP issues](https://www.juniper.net/documentation/en_US/cso5.0/topics/task/troubleshooting/troubleshooting-smtp-issues.html)
+[RFC 3207 if you need TLS connection](https://www.rfc-editor.org/rfc/rfc3207)
