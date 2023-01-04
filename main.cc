@@ -20,8 +20,8 @@ void tryClient()
 
     Mail mail(sender, recipients, subject, message);
 
-    const char* hostname = "smtp.gmail.com";
-    int port = 587;
+    const char* hostname = "smtp.mandrillapp.com";
+    int port = 2525;
     SmtpClient client(hostname, port);
     client.sendMail(mail);
 

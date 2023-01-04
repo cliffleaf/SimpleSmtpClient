@@ -16,6 +16,7 @@ private:
     char readBuffer[4096];
     void messageHost(const char* text);
     int getResponse();
+    void wrongResponseMsg(int code, std::string message);
 };
 
 #endif

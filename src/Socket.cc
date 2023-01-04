@@ -38,7 +38,7 @@ void Socket::write(const char* text)
 {
     if (send(this->socketfd, text, strlen(text), 0) != strlen(text)) 
         printf("send error");
-    printf("C: %s\n", text);
+    printf("C: %s", text);
 }
 
 void Socket::read(char* returnMsg) {
@@ -51,8 +51,7 @@ void Socket::read(char* returnMsg) {
     {
         strcat(returnMsg, recvBuffer);
         // if ends with \r\n, then read is completed
-        if ((recvBuffer[strlen(recvBuffer)-2] == '\r') && recvBuffer[strlen(recvBuffer)-1] == '\n') {  
-            printf("\n");
+        if ((recvBuffer[strlen(recvBuffer)-2] == '\r') && recvBuffer[strlen(recvBuffer)-1] == '\n') { 
             return;
         }
         memset(recvBuffer, 0, recvBytes);

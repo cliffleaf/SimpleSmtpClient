@@ -22,13 +22,24 @@ void SmtpClient::sendMail(Mail mail)
         return;
     } 
 
-    messageHost("STARTTLS");
-    if ( (responseCode = getResponse()) != 220) {
-        std::cout << "STARTTLS failed with error code " << responseCode << std::endl;
+    // login with AUTH
+    messageHost("AUTH LOGIN");
+    if ( (responseCode = getResponse()) != 334) {
+        std::cout << "AUTH failed with error code " << responseCode << std::endl;
         return;
     } 
 
-    // login with AUTH
+    messageHost("a2V2aW5saWFuZzA0MzBAZ21haWwuY29t");
+    if ( (responseCode = getResponse()) != 334) {
+        std::cout << "wrong username " << responseCode << std::endl;
+        return;
+    } 
+
+    messageHost("NTZjZTBjODFjMDRiODJkMGVlOTgyNjlkNTU3MzhkYzAtdXMx");
+    if ( (responseCode = getResponse()) != 235) {
+        std::cout << "wrong password " << responseCode << std::endl;
+        return;
+    } 
 
     // send smtp commands
     const char* sender = mail.getSender();
@@ -52,13 +63,19 @@ void SmtpClient::messageHost(const char* text)
 int SmtpClient::getResponse()
 {
     // socket reads the server response, then copy it to readBuffer
-    // this->socket.read(this->readBuffer);
     this->socket.read(&(readBuffer[0]));
-    printf("here\n");
 
     std::string responseCode = Util::substring(readBuffer, 0, 3);
     int code = std::stoi(responseCode);
     printf("%s\n", this->readBuffer);
 
     return code;
+}
+
+void SmtpClient::wrongResponseMsg(int code, std::string message)
+{
+    int responseCode;
+    if ( (responseCode = this->getResponse()) != code) {
+        std::cout << message << " " << responseCode << std::endl;
+    } 
 }
