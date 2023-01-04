@@ -1,20 +1,24 @@
 #ifndef MAIL_H
 #define MAIL_H
 
-#include "RecipientsList.hh"
+#include <iostream>
+#include <string>
+#include <vector>
 
 class Mail
 {
 public:
-    Mail(RecipientsList recipients, const char* message);
-    Mail(RecipientsList recipient, const char* subject, const char* message);
+    Mail(const char* sender, std::vector<std::string> recipients, const char* message);
+    Mail(const char* sender, std::vector<std::string> recipients, const char* subject, const char* message);
 
-    RecipientsList getRecipients();
+    const char* getSender();
+    std::vector<std::string> getRecipients();
     const char* getSubject();
     const char* getMessage();
 
 private:
-    RecipientsList recipients;
+    const char* sender;
+    std::vector<std::string> recipients;
     const char* subject;
     const char* message;
 };

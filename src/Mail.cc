@@ -1,20 +1,27 @@
 #include "Mail.hh"
 
-Mail::Mail(RecipientsList recipients, const char* message)
+Mail::Mail(const char* sender, std::vector<std::string> recipients, const char* message)
 {
+    this->sender = sender;
     this->recipients = recipients;
     this->subject = "";
     this->message = message;
 }
 
-Mail::Mail(RecipientsList recipients, const char* subject, const char* message)
+Mail::Mail(const char* sender, std::vector<std::string> recipients, const char* subject, const char* message)
 {
+    this->sender = sender;
     this->recipients = recipients;
     this->subject = subject;
     this->message = message;
 }
 
-RecipientsList Mail::getRecipients()
+const char* Mail::getSender()
+{
+    return this->sender;
+}
+
+std::vector<std::string> Mail::getRecipients()
 {
     return this->recipients;
 }

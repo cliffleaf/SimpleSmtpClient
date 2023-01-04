@@ -3,10 +3,18 @@
 
 int main(int argc, char *argv[])
 {
+    const char* sender = "kevinliang0430@gmail.com";
+    const char* subject = "hello";
+    const char* message = "lol";
+    std::vector<std::string> recipients;
+    recipients.push_back("kevinliang0430@gmail.com");
+
+    Mail mail(sender, recipients, subject, message);
+
     const char* hostname = "smtp.gmail.com";
     int port = 587;
-
     SmtpClient client(hostname, port);
+    client.sendMail(mail);
 
     // socket.write("EHLO client.net\r\n");
     // socket.read();
@@ -25,5 +33,5 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-// g++ -o main main.cc src/Socket.cc
+// g++ -o main main.cc src/Socket.cc src/SmtpClient.cc
 // ./main

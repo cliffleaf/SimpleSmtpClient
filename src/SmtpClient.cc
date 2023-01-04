@@ -19,7 +19,8 @@ void SmtpClient::sendMail(Mail mail)
     // login with AUTH
 
     // send smtp commands
-    RecipientsList recipients = mail.getRecipients();
+    const char* sender = mail.getSender();
+    std::vector<std::string> recipients = mail.getRecipients();
     const char* subject = mail.getSubject();
     const char* message = mail.getMessage();
     // quit connection
