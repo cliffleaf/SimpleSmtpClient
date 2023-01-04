@@ -32,7 +32,6 @@ void SmtpClient::sendMail(Mail mail)
 
     if (this->mailCommands(sender, recipients, subject, message) == -1) return;
 
-    // quit connection
     messageHost("QUIT ", "");
 }
 
@@ -101,6 +100,7 @@ int SmtpClient::mailCommands(const char* sender,
 
 void SmtpClient::messageHost(const char* command, const char* param)
 {
+    // impossible to concatenate const char*, therefore append them to a new char[]
     char msg[strlen(command) + strlen(param) + 2];
     strcpy(msg, command);
     strcat(msg, param);
