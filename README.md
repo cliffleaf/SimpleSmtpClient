@@ -2,7 +2,7 @@
 A simple SMTP client, allow users to build and send an email to a SMTP server
 
 ### Quick Start
-clone the project, and create file main.cc, modify as below. 
+clone the project, and create a file for int main(), modify as below. 
 
 The SMTP server is mailchimp, also remember to change the AUTH details in ```SmtpClient::mailCommands()```
 
@@ -35,9 +35,7 @@ int main(int argc, char *argv[])
 
 ```
 
-### Helpful Tutorials
-C/C++ Socket Programming
-
+### Helpful Article
 [SMTP commands](https://mailtrap.io/blog/smtp-commands-and-responses)
 
 [Troubleshooting common SMTP issues](https://www.juniper.net/documentation/en_US/cso5.0/topics/task/troubleshooting/troubleshooting-smtp-issues.html)
