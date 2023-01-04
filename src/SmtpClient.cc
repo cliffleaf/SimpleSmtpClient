@@ -24,5 +24,6 @@ void SmtpClient::sendMail(Mail mail)
 
 void SmtpClient::messageHost(const char* text)
 {
+    // write to server, but also receives response code
     this->socket.write(text);
 }

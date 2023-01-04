@@ -6,7 +6,7 @@ Socket::Socket(const char* hostname, int port)
     this->port = port;
 }
 
-int Socket::connectToHost()
+void Socket::connectToHost()
 {
     char hostaddr[100];
     this->hostnameToIp( (char*) this->hostname, hostaddr);
@@ -15,7 +15,6 @@ int Socket::connectToHost()
     this->socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd < 0) {
         printf("undable to open socket\n");
-        return socketfd;
     } else {
         printf("opened socket\n");
     } 
@@ -28,24 +27,39 @@ int Socket::connectToHost()
     } else {
         printf("connected to hostname\n");
     }
-
-    return con;
 }
 
-int Socket::write(const char* text)
+void Socket::write(const char* text)
 {
-    return send(this->socketfd, text, strlen(text), 0);
+    if (send(this->socketfd, text, strlen(text), 0) != strlen(text)) 
+        printf("send error");
+    printf("sent\n");
+}
+
+int Socket::read() {
+    int n;
+    char recvline[100];
+
+    while ( (n = recv(socketfd, recvline, 100 - 1, 0)) > 0 )
+    {
+        printf("%s", recvline);
+        memset(recvline, 0, 100);
+    }
+
+    return 0;
 }
 
 sockaddr_in Socket::buildServerAddress(char* hostaddr)
 {
     struct sockaddr_in serverAddress;
+    bzero(&serverAddress, sizeof(serverAddress));
 
     serverAddress.sin_family = AF_INET;
     if (inet_pton(AF_INET, hostaddr, &serverAddress.sin_addr) <= 0)
         printf("invalid address\n");
 
     serverAddress.sin_port = htons(this->port);
+    bzero(&(serverAddress.sin_zero), sizeof(serverAddress.sin_zero));
 
     return serverAddress;
 }

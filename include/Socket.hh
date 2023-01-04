@@ -13,9 +13,9 @@ class Socket
 public:
     Socket(const char* hostname, int port);
 
-    int connectToHost();
-    // int read();
-    int write(const char* text);
+    void connectToHost();
+    void write(const char* text);
+    int read();
     // void terminate();
 
 private:
