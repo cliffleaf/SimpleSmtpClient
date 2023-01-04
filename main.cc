@@ -1,6 +1,5 @@
 #include "include/Socket.hh"
-
-void hostname_to_ip(char* hostname , char* ip);
+#
 
 int main(int argc, char *argv[])
 {
@@ -8,7 +7,16 @@ int main(int argc, char *argv[])
     int port = 587;
 
     Socket socket(hostname, port);
-    printf("%d\n", socket.connectToHost());
+    socket.connectToHost();
+    socket.read();
+
+    // socket.write("EHLO client.net\r\n");
+    // socket.read();
+    // socket.write("AUTH PLAIN")
+    // socket.write("MAIL FROM kevinliang0430@gmail.com");
+    // socket.write("RCPT TO kevinliang0430@gmail.com");
+    // socket.write("DATA\n354\nhello\n.");
+
     return 0;
 }
 
