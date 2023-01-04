@@ -8,7 +8,6 @@ SmtpClient::SmtpClient(const char* hostname, int port)
 
 void SmtpClient::sendMail(Mail mail)
 {
-    // https://mailtrap.io/blog/smtp-commands-and-responses/
     int responseCode;
     
     this->socket.connectToHost();

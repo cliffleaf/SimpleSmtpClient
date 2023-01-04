@@ -42,3 +42,4 @@ int main(int argc, char *argv[])
 
 [RFC 3207 if you need TLS connection](https://www.rfc-editor.org/rfc/rfc3207)
 
+[Mailchimp SMTP documentation](https://mailchimp.com/developer/transactional/docs/smtp-integration/#send-via-smtp-with-your-programming-language-of-choice)
