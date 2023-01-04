@@ -14,9 +14,13 @@ public:
 private:
     Socket socket;
     char readBuffer[4096];
-    void messageHost(const char* text);
+    void messageHost(const char* command, const char* param);
+    int authenticateCommands();
+    int mailCommands(const char* sender, 
+                    std::vector<std::string> recipients, 
+                    const char* subject,
+                    const char* message);
     int getResponse();
-    void wrongResponseMsg(int code, std::string message);
 };
 
 #endif

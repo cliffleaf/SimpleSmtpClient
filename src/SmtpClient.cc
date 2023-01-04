@@ -8,6 +8,7 @@ SmtpClient::SmtpClient(const char* hostname, int port)
 
 void SmtpClient::sendMail(Mail mail)
 {
+    // https://mailtrap.io/blog/smtp-commands-and-responses/
     int responseCode;
     
     this->socket.connectToHost();
@@ -16,45 +17,93 @@ void SmtpClient::sendMail(Mail mail)
         return;
     }
 
-    messageHost("EHLO client");
+    messageHost("EHLO client", "");
     if ( (responseCode = getResponse()) != 250) {
         std::cout << "EHLO failed with error code " << responseCode << std::endl;
         return;
     } 
 
-    // login with AUTH
-    messageHost("AUTH LOGIN");
-    if ( (responseCode = getResponse()) != 334) {
-        std::cout << "AUTH failed with error code " << responseCode << std::endl;
-        return;
-    } 
+    if (this->authenticateCommands() == -1) return;
 
-    messageHost("a2V2aW5saWFuZzA0MzBAZ21haWwuY29t");
-    if ( (responseCode = getResponse()) != 334) {
-        std::cout << "wrong username " << responseCode << std::endl;
-        return;
-    } 
-
-    messageHost("NTZjZTBjODFjMDRiODJkMGVlOTgyNjlkNTU3MzhkYzAtdXMx");
-    if ( (responseCode = getResponse()) != 235) {
-        std::cout << "wrong password " << responseCode << std::endl;
-        return;
-    } 
-
-    // send smtp commands
     const char* sender = mail.getSender();
     std::vector<std::string> recipients = mail.getRecipients();
     const char* subject = mail.getSubject();
     const char* message = mail.getMessage();
 
+    if (this->mailCommands(sender, recipients, subject, message) == -1) return;
+
     // quit connection
-    messageHost("QUIT");
+    messageHost("QUIT ", "");
 }
 
-void SmtpClient::messageHost(const char* text)
+int SmtpClient::authenticateCommands()
 {
-    char msg[strlen(text)+2];
-    strcpy(msg, text);
+    int responseCode;
+
+    // login with AUTH
+    messageHost("AUTH LOGIN", "");
+    if ( (responseCode = getResponse()) != 334) {
+        std::cout << "AUTH failed with error code " << responseCode << std::endl;
+        return -1;
+    } 
+
+    messageHost("a2V2aW5saWFuZzA0MzBAZ21haWwuY29t", "");
+    if ( (responseCode = getResponse()) != 334) {
+        std::cout << "wrong username " << responseCode << std::endl;
+        return -1;
+    } 
+
+    messageHost("NTZjZTBjODFjMDRiODJkMGVlOTgyNjlkNTU3MzhkYzAtdXMx", "");
+    if ( (responseCode = getResponse()) != 235) {
+        std::cout << "wrong password " << responseCode << std::endl;
+        return -1;
+    } 
+
+    return 0;
+}
+
+int SmtpClient::mailCommands(const char* sender, 
+                    std::vector<std::string> recipients, 
+                    const char* subject,
+                    const char* message)
+{
+    int responseCode;
+
+    messageHost("MAIL FROM ", sender); 
+    if ( (responseCode = this->getResponse()) != 250) {
+        std::cout << "wrong sender address " << responseCode << std::endl;
+        return -1;
+    } 
+
+    for (int i = 0; i < recipients.size(); i++) {
+        messageHost("RCPT TO ", recipients[i].c_str());
+        if ( (responseCode = this->getResponse()) != 250) {
+            std::cout << "wrong recipient address " << responseCode << std::endl;
+            return -1;
+        } 
+    }
+
+    messageHost("DATA", "");
+    if ( (responseCode = this->getResponse()) != 354) {
+        std::cout << "DATA command error " << responseCode << std::endl;
+        return -1;
+    }
+
+    messageHost(message, "");
+    messageHost(".", "");
+    if ( (responseCode = this->getResponse()) != 250) {
+        std::cout << "email content error " << responseCode << std::endl;
+        return -1;
+    }
+
+    return 0;
+}
+
+void SmtpClient::messageHost(const char* command, const char* param)
+{
+    char msg[strlen(command) + strlen(param) + 2];
+    strcpy(msg, command);
+    strcat(msg, param);
     strcat(msg, "\r\n");
 
     this->socket.write(msg);
@@ -70,12 +119,4 @@ int SmtpClient::getResponse()
     printf("%s\n", this->readBuffer);
 
     return code;
-}
-
-void SmtpClient::wrongResponseMsg(int code, std::string message)
-{
-    int responseCode;
-    if ( (responseCode = this->getResponse()) != code) {
-        std::cout << message << " " << responseCode << std::endl;
-    } 
 }

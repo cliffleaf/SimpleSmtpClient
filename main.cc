@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 
 void tryClient()
 {
+    // echo -ne ""|base64
     const char* sender = "kevinliang0430@gmail.com";
     const char* subject = "hello";
     const char* message = "lol";
