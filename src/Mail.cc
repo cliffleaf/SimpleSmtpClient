@@ -1,4 +1,4 @@
-#include "Mail.hh"
+#include "../include/Mail.hh"
 
 Mail::Mail(const char* sender, std::vector<std::string> recipients, const char* message)
 {

@@ -8,13 +8,25 @@ SmtpClient::SmtpClient(const char* hostname, int port)
 
 void SmtpClient::sendMail(Mail mail)
 {
-    // connect to host
+    int responseCode;
+    
     this->socket.connectToHost();
+    if ( (responseCode = getResponse()) != 220) {
+        std::cout << "server connected with error code " << responseCode << std::endl;
+        return;
+    }
 
     messageHost("EHLO client");
-    getResponse();
+    if ( (responseCode = getResponse()) != 250) {
+        std::cout << "EHLO failed with error code " << responseCode << std::endl;
+        return;
+    } 
+
     messageHost("STARTTLS");
-    getResponse();
+    if ( (responseCode = getResponse()) != 220) {
+        std::cout << "STARTTLS failed with error code " << responseCode << std::endl;
+        return;
+    } 
 
     // login with AUTH
 
@@ -23,7 +35,9 @@ void SmtpClient::sendMail(Mail mail)
     std::vector<std::string> recipients = mail.getRecipients();
     const char* subject = mail.getSubject();
     const char* message = mail.getMessage();
+
     // quit connection
+    messageHost("QUIT");
 }
 
 void SmtpClient::messageHost(const char* text)
@@ -35,9 +49,16 @@ void SmtpClient::messageHost(const char* text)
     this->socket.write(msg);
 }
 
-void SmtpClient::getResponse()
+int SmtpClient::getResponse()
 {
     // socket reads the server response, then copy it to readBuffer
-    this->socket.read(this->readBuffer);
+    // this->socket.read(this->readBuffer);
+    this->socket.read(&(readBuffer[0]));
+    printf("here\n");
+
+    std::string responseCode = Util::substring(readBuffer, 0, 3);
+    int code = std::stoi(responseCode);
     printf("%s\n", this->readBuffer);
+
+    return code;
 }

@@ -3,6 +3,7 @@
 
 #include "Socket.hh"
 #include "Mail.hh"
+#include "Util.hh"
 
 class SmtpClient
 {
@@ -14,7 +15,7 @@ private:
     Socket socket;
     char readBuffer[4096];
     void messageHost(const char* text);
-    void getResponse();
+    int getResponse();
 };
 
 #endif

@@ -1,7 +1,16 @@
-#include "include/Socket.hh"
-#include "include/SmtpClient.hh"
+#include "headers.hh"
+#include "include/Util.hh"
+
+void tryClient();
 
 int main(int argc, char *argv[])
+{
+    tryClient();
+
+    return 0;
+}
+
+void tryClient()
 {
     const char* sender = "kevinliang0430@gmail.com";
     const char* subject = "hello";
@@ -29,9 +38,7 @@ int main(int argc, char *argv[])
     // socket.write("DATA\n354\nhello\n.\r\n");
     // socket.write("QUIT\r\n");
     // socket.read();
-
-    return 0;
 }
 
-// g++ -o main main.cc src/Socket.cc src/SmtpClient.cc
+// g++ -o main main.cc src/Socket.cc src/SmtpClient.cc src/Mail.cc src/Util.cc
 // ./main

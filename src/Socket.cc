@@ -45,15 +45,15 @@ void Socket::read(char* returnMsg) {
     int recvBytes = 100;
     char recvBuffer[recvBytes];
 
-    memset(returnMsg, 0, strlen(returnMsg));
-    returnMsg[0] = '\0';
-
+    // zero out the content from last read
+    strcpy(returnMsg, "");
     while ( (recv(socketfd, recvBuffer, recvBytes - 1, 0)) > 0 )
     {
         strcat(returnMsg, recvBuffer);
         // if ends with \r\n, then read is completed
-        if ((recvBuffer[strlen(recvBuffer)-2] == '\r') && recvBuffer[strlen(recvBuffer)-1] == '\n') {
+        if ((recvBuffer[strlen(recvBuffer)-2] == '\r') && recvBuffer[strlen(recvBuffer)-1] == '\n') {  
             printf("\n");
+            return;
         }
         memset(recvBuffer, 0, recvBytes);
     }
