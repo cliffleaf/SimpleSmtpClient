@@ -7,14 +7,14 @@
 class SmtpClient
 {
 public:
-    SmtpClient(const char* sender, const char* password);
+    SmtpClient(const char* hostname, int port);
     void sendMail(Mail mail);
 
 private:
-    const char* sender;
-    const char* password;
     Socket socket;
+    char readBuffer[4096];
     void messageHost(const char* text);
+    void getResponse();
 };
 
 #endif

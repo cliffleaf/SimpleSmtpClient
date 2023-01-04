@@ -1,5 +1,10 @@
 #include "../include/Socket.hh"
 
+Socket::Socket()
+{
+
+}
+
 Socket::Socket(const char* hostname, int port)
 {
     this->hostname = hostname;
@@ -36,24 +41,22 @@ void Socket::write(const char* text)
     printf("C: %s\n", text);
 }
 
-int Socket::read() {
-    int n;
+void Socket::read(char* returnMsg) {
     int recvBytes = 100;
-
     char recvBuffer[recvBytes];
-    while ( (n = recv(socketfd, recvBuffer, recvBytes - 1, 0)) > 0 )
+
+    memset(returnMsg, 0, strlen(returnMsg));
+    returnMsg[0] = '\0';
+
+    while ( (recv(socketfd, recvBuffer, recvBytes - 1, 0)) > 0 )
     {
-        printf("%s", recvBuffer);
-        
-        // recvBuffer ends with \r\n 
+        strcat(returnMsg, recvBuffer);
+        // if ends with \r\n, then read is completed
         if ((recvBuffer[strlen(recvBuffer)-2] == '\r') && recvBuffer[strlen(recvBuffer)-1] == '\n') {
             printf("\n");
-            return 0;
         }
         memset(recvBuffer, 0, recvBytes);
     }
-    
-    return 0;
 }
 
 sockaddr_in Socket::buildServerAddress(char* hostaddr)
@@ -86,4 +89,14 @@ void Socket::hostnameToIp(char* hostname , char* ip)
 		strcpy(ip , inet_ntoa(*addr_list[i]) );
 		return;
 	}
+}
+
+void Socket::setHostname(const char* hostname)
+{
+    this->hostname = hostname;
+}
+
+void Socket::setPort(int port)
+{
+    this->port = port;
 }

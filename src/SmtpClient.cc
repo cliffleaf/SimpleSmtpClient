@@ -1,18 +1,21 @@
 #include "../include/SmtpClient.hh"
 
-SmtpClient::SmtpClient(const char* sender, const char* password) 
-    : socket("smtp.gmail.com", 587)
+SmtpClient::SmtpClient(const char* hostname, int port)
 {
-    this->sender = sender;
-    this->password = password;
+    this->socket.setHostname(hostname);
+    this->socket.setPort(port);
 }
 
 void SmtpClient::sendMail(Mail mail)
 {
     // connect to host
     this->socket.connectToHost();
-    // send HELO
-    messageHost("HELO message");
+
+    messageHost("EHLO client");
+    getResponse();
+    messageHost("STARTTLS");
+    getResponse();
+
     // login with AUTH
 
     // send smtp commands
@@ -24,6 +27,16 @@ void SmtpClient::sendMail(Mail mail)
 
 void SmtpClient::messageHost(const char* text)
 {
-    // write to server, but also receives response code
-    this->socket.write(text);
+    char msg[strlen(text)+2];
+    strcpy(msg, text);
+    strcat(msg, "\r\n");
+
+    this->socket.write(msg);
+}
+
+void SmtpClient::getResponse()
+{
+    // socket reads the server response, then copy it to readBuffer
+    this->socket.read(this->readBuffer);
+    printf("%s\n", this->readBuffer);
 }

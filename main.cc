@@ -1,13 +1,12 @@
 #include "include/Socket.hh"
+#include "include/SmtpClient.hh"
 
 int main(int argc, char *argv[])
 {
-    char* hostname = (char*) "smtp.gmail.com";
+    const char* hostname = "smtp.gmail.com";
     int port = 587;
 
-    Socket socket(hostname, port);
-    socket.connectToHost();
-    socket.read();
+    SmtpClient client(hostname, port);
 
     // socket.write("EHLO client.net\r\n");
     // socket.read();

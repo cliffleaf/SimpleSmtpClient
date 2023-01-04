@@ -12,17 +12,20 @@
 class Socket
 {
 public:
+    Socket();
     Socket(const char* hostname, int port);
 
     void connectToHost();
     void write(const char* text);
-    int read();
-    // void terminate();
+    void read(char* returnMsg);
+    void setHostname(const char* hostname);
+    void setPort(int port);
 
 private:
     const char* hostname;
     int port;
     int socketfd;
+
     sockaddr_in buildServerAddress(char* hostaddr);
     void hostnameToIp(char* hostname , char* hostaddr);
 };
