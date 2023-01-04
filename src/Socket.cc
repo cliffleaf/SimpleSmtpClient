@@ -33,19 +33,26 @@ void Socket::write(const char* text)
 {
     if (send(this->socketfd, text, strlen(text), 0) != strlen(text)) 
         printf("send error");
-    printf("sent\n");
+    printf("C: %s\n", text);
 }
 
 int Socket::read() {
     int n;
-    char recvline[100];
+    int recvBytes = 100;
 
-    while ( (n = recv(socketfd, recvline, 100 - 1, 0)) > 0 )
+    char recvBuffer[recvBytes];
+    while ( (n = recv(socketfd, recvBuffer, recvBytes - 1, 0)) > 0 )
     {
-        printf("%s", recvline);
-        memset(recvline, 0, 100);
+        printf("%s", recvBuffer);
+        
+        // recvBuffer ends with \r\n 
+        if ((recvBuffer[strlen(recvBuffer)-2] == '\r') && recvBuffer[strlen(recvBuffer)-1] == '\n') {
+            printf("\n");
+            return 0;
+        }
+        memset(recvBuffer, 0, recvBytes);
     }
-
+    
     return 0;
 }
 
