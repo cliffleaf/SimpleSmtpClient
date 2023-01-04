@@ -6,7 +6,7 @@ clone the project, and modify main.cc as such.
 
 The SMTP server is mailchimp, also remember to change the AUTH details in SmtpClient::mailCommands() 
 
-```ruby
+```c++
 
 #include "headers.hh"
 
