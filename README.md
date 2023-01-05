@@ -2,7 +2,7 @@
 A simple SMTP client, allow users to send emails through an existing SMTP server
 
 ### Quick Start
-clone the project, and create a file for int main() 
+Clone the project, and create a new file in root directory for int main() 
 
 ```c++
 
@@ -49,9 +49,9 @@ for now you have to do it on your own
 
 ```
 
-Then compile with '''g++ -o main main.cc src/SmtpClient.cc src/Socket.cc src/Mail.cc src/Util.cc'''
+Then compile with ```g++ -o client main.cc src/SmtpClient.cc src/Socket.cc src/Mail.cc src/Util.cc```
 
-Run '''./main'''
+Run ```./client```
 
 ### Helpful Article
 [SMTP commands](https://mailtrap.io/blog/smtp-commands-and-responses)
