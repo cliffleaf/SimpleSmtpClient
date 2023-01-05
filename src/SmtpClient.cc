@@ -11,6 +11,7 @@ SmtpClient::SmtpClient(const char* hostname,
     this->password = password;
 }
 
+// TODO: put "if ( (responseCode = getResponse()) != xxx)" into a separate method rather than hardcode
 void SmtpClient::sendMail(Mail mail)
 {
     int responseCode;
@@ -118,11 +119,11 @@ int SmtpClient::getResponse()
 {
     // socket reads the server response, then copy it to readBuffer
     this->socket.read(&(readBuffer[0]));
-
+  
+    // response code is the first 3 characters of response message, convert it to integer
     std::string responseCode = Util::substring(readBuffer, 0, 3);
-    std::cout << responseCode << std::endl;
     int code = std::stoi(responseCode);
+  
     printf("%s\n", this->readBuffer);
-
     return code;
 }
