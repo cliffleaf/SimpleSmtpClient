@@ -1,9 +1,14 @@
 #include "../include/SmtpClient.hh"
 
-SmtpClient::SmtpClient(const char* hostname, int port)
+SmtpClient::SmtpClient(const char* hostname, 
+                int port, 
+                const char* username, 
+                const char* password)
 {
     this->socket.setHostname(hostname);
     this->socket.setPort(port);
+    this->username = username;
+    this->password = password;
 }
 
 void SmtpClient::sendMail(Mail mail)
@@ -45,13 +50,14 @@ int SmtpClient::authenticateCommands()
         return -1;
     } 
 
-    messageHost("a2V2aW5saWFuZzA0MzBAZ21haWwuY29t", "");
+    std::cout << this->username << std::endl;
+    messageHost(this->username, "");
     if ( (responseCode = getResponse()) != 334) {
         std::cout << "wrong username " << responseCode << std::endl;
         return -1;
     } 
 
-    messageHost("NTZjZTBjODFjMDRiODJkMGVlOTgyNjlkNTU3MzhkYzAtdXMx", "");
+    messageHost(this->password, "");
     if ( (responseCode = getResponse()) != 235) {
         std::cout << "wrong password " << responseCode << std::endl;
         return -1;
@@ -67,14 +73,14 @@ int SmtpClient::mailCommands(const char* sender,
 {
     int responseCode;
 
-    messageHost("MAIL FROM ", sender); 
+    messageHost("MAIL FROM: ", sender); 
     if ( (responseCode = this->getResponse()) != 250) {
         std::cout << "wrong sender address " << responseCode << std::endl;
         return -1;
     } 
 
     for (int i = 0; i < recipients.size(); i++) {
-        messageHost("RCPT TO ", recipients[i].c_str());
+        messageHost("RCPT TO: ", recipients[i].c_str());
         if ( (responseCode = this->getResponse()) != 250) {
             std::cout << "wrong recipient address " << responseCode << std::endl;
             return -1;
@@ -114,6 +120,7 @@ int SmtpClient::getResponse()
     this->socket.read(&(readBuffer[0]));
 
     std::string responseCode = Util::substring(readBuffer, 0, 3);
+    std::cout << responseCode << std::endl;
     int code = std::stoi(responseCode);
     printf("%s\n", this->readBuffer);
 

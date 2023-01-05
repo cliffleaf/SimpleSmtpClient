@@ -9,6 +9,7 @@ class Util
 {
 public:
     static std::string substring(const char* word, int start, int end);
+    static std::string base64_encode(char const* bytes, unsigned int length);
 };
 
 #endif

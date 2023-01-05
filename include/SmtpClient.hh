@@ -8,12 +8,21 @@
 class SmtpClient
 {
 public:
-    SmtpClient(const char* hostname, int port);
+    SmtpClient(const char* hostname, 
+                int port, 
+                const char* username, 
+                const char* password);
     void sendMail(Mail mail);
+
+    void setUsername(const char* username);
+    void setPassword(const char* password);
 
 private:
     Socket socket;
+    const char* username;
+    const char* password;
     char readBuffer[4096];
+
     void messageHost(const char* command, const char* param);
     int authenticateCommands();
     int mailCommands(const char* sender, 
