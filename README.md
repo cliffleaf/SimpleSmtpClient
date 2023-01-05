@@ -35,6 +35,8 @@ The SMTP server is mailchimp, we need some configurations in [mandrillapp settin
 - username: your primary email address 
 - password: the api key for mandrillapp
 
+![mandrill dashboard](https://github.com/cliffleaf/SmtpClient/blob/main/img/mandrill-dashboard.jpg)
+
 They have to be encoded into base64 format. We are still working on automatic base64 conversion, 
 for now you have to do it on your own
 
